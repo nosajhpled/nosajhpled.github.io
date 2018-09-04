@@ -1,0 +1,79 @@
+<h3>Simple Log4Net Install and Usage</h3>
+
+<p>Click Project -> Mange NuGet Packages</p>
+<p><img src="http://i.imgur.com/aArUj0B.png" width="341" height="474" /></p>
+<p>Choose NuGet in Package Source.</p>
+<p><img src="http://imgur.com/vYxAUXF.png" width="322" height="66" /></p>
+<p>Search for Log4Net</p>
+<p><img src="http://imgur.com/eUT9Oqi.png" width="744" height="305" /></p>
+<p>Choose Log4Net and Install</p>
+<p><img src="http://imgur.com/ZTLjOSJ.png" width="513" height="253" /></p>
+<p>Add one line to Project->Properties->AssemblyInfo.cs.  This line will path to the Log4Net.xml config file.</p>
+<p><img src="http://imgur.com/JRh83lY.png" width="200" height="51" /></p>
+<p><code></p>
+<pre>
+
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.xml", Watch = true)]
+
+</pre>
+<p></code></p>
+<p>Add new xml item to the project called log4net.xml (or whatever you called it above)</p>
+<p>Here is a sample config file:</p>
+<pre>
+
+<p>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;<br>
+  &lt;configuration&gt;<br>
+  &lt;configSections&gt;<br>
+  &lt;section name=&quot;log4net&quot; type=&quot;log4net.Config.Log4NetConfigurationSectionHandler, log4net&quot;/&gt;<br>
+  &lt;/configSections&gt;<br>
+  &lt;log4net&gt;<br>
+  &lt;root&gt;<br>
+  &lt;level value=&quot;ALL&quot; /&gt;<br>
+  &lt;appender-ref ref=&quot;RollingLog&quot; /&gt;<br>
+  &lt;appender-ref ref=&quot;CurrentLog&quot; /&gt;<br>
+  &lt;/root&gt;</p>
+<p> &lt;appender name=&quot;CurrentLog&quot; type=&quot;log4net.Appender.FileAppender&quot;&gt;<br>
+  &lt;file value=&quot;application.log&quot; /&gt;<br>
+  &lt;appendToFile value=&quot;false&quot; /&gt;<br>
+  &lt;lockingModel type=&quot;log4net.Appender.FileAppender+MinimalLock&quot; /&gt;<br>
+  &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;<br>
+  &lt;conversionPattern value=&quot;%date %level %logger - %message%newline&quot; /&gt;<br>
+  &lt;/layout&gt;<br>
+  &lt;/appender&gt;<br>
+  &lt;appender name=&quot;RollingLog&quot; type=&quot;log4net.Appender.RollingFileAppender&quot;&gt;<br>
+  &lt;file value=&quot;rolling.log&quot; /&gt;<br>
+  &lt;appendToFile value=&quot;true&quot; /&gt;<br>
+  &lt;rollingStyle value=&quot;Size&quot; /&gt;<br>
+  &lt;maxSizeRollBackups value=&quot;5&quot; /&gt;<br>
+  &lt;maximumFileSize value=&quot;10MB&quot; /&gt;<br>
+  &lt;staticLogFileName value=&quot;true&quot; /&gt;<br>
+  &lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;<br>
+  &lt;conversionPattern value=&quot;%date [%thread] %level %logger - %message%newline&quot; /&gt;<br>
+  &lt;/layout&gt;<br>
+  &lt;/appender&gt;<br>
+  &lt;/log4net&gt;<br>
+  &lt;startup&gt;<br>
+  &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5&quot; /&gt;<br>
+  &lt;/startup&gt;<br>
+  &lt;/configuration&gt;</p>
+
+
+</pre>
+<p>File the xml file&#8217;s properties to &#8220;Copy to Output Directory&#8221; : &#8220;Copy Always&#8221;</p>
+<p><img src="http://imgur.com/1IY31PC.png" width="250" height="148" /></p>
+<p>Add this as a global variable:<br />
+<code></p>
+<pre>
+
+private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+</pre>
+<p></code></p>
+<p>Now you are ready to use Log4Net.</p>
+<p><code></p>
+<pre>
+
+log.Error("Error Message");
+
+</pre>
+<p></code></p>
