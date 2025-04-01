@@ -1,206 +1,275 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<!--
-<div class="tile">
-<h2></h2>
-<ul>
-  <li><a href=""  target="_blank"></a></li>
-</ul>
-</div>
--->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-<style type="text/css">
-body
-{
-  padding:10px;
-}
-h2 {font-size: 1em;}
-
-
-[class*="col"] {
-  border:1px solid black;
-  padding:5px;
-  margin: 5px;
-}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Links</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .heading-link {
+      color: #f9a8d4; /* Light Pink/Purple for headings - accessible against deep purple*/
+      transition: color 0.3s ease;
+    }
+    .heading-link:hover {
+      color: #f472b6; /* Brighter Pink on hover */
+    }
+    .link-item {
+      color: #fab0e4; /* Light Lavender for links - accessible */
+      transition: color 0.3s ease, text-decoration 0.3s ease;
+      text-decoration: none;
+    }
+    .link-item:hover {
+      color: #f06292; /* Darker Pink on hover */
+      text-decoration: underline;
+    }
+    .section-title {
+      color: #ffffff; /* White for titles - good contrast */
+      font-size: 1.875rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .link-block {
+      background-color: #4a148c; /* Deep Purple Link Block Background */
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid #6a1b9a; /* Slightly lighter border */
+    }
+    .link-block:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increased shadow on hover */
+    }
+    .link-block h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #ffffff; /* White for heading in link block */
+      text-align: left;
+    }
+    .link-block ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .link-block li {
+      margin-bottom: 0.75rem;
+    }
+  </style>
 </head>
-
+<body class="bg-purple-900"> /* Deepest purple background */
 <div class="container">
-  <h1>Web Dev</h1>
-  <div class="row">
-      <div class="col">
-      <h2>Amazon Web Services</h2>
+  <h1 class="text-3xl font-bold text-white mb-6 text-center">My Links</h1> /* White Title */
+
+  <div class="grid-container">
+    <div class="link-block">
+      <h2 class="heading-link">Amazon Web Services</h2>
       <ul>
-        <li><a href="http://aws.amazon.com" target="_blank">AWS</a></li>
-        <li><a href="https://www.youtube.com/channel/UCT-nPlVzJI-ccQXlxjSvJmw" target="_blank">AWS - Youtube</a></li>
-        <li><a href="https://stackoverflow.com/questions/3190667/convert-pem-to-ppk-file-format" target="_blank">Convert PEM to PPK file format</a></li>
-        <li><a href="https://gist.github.com/nosajhpled/e1b429863ec1d8b75513f8c8a011e775" target="_blank">Create New User on EC2 to SFTP</a></li>
-<li><a href="https://gist.github.com/nosajhpled/893dc1819aa629d5c69510f71cf59914" target="_blank">Create Certificate Request on Apache</a></li>
-<li><a href="https://status.aws.amazon.com/" target="_blank">Service Health Dashboard</a></li>
+        <li><a href="http://aws.amazon.com" target="_blank" class="link-item">AWS</a></li>
+        <li><a href="https://www.youtube.com/channel/UCT-nPlVzJI-ccQXlxjSvJmw" target="_blank" class="link-item">AWS - Youtube</a></li>
+        <li><a href="https://stackoverflow.com/questions/3190667/convert-pem-to-ppk-file-format" target="_blank" class="link-item">Convert PEM to PPK file format</a></li>
+        <li><a href="https://gist.github.com/nosajhpled/e1b429863ec1d8b75513f8c8a011e775" target="_blank" class="link-item">Create New User on EC2 to SFTP</a></li>
+        <li><a href="https://gist.github.com/nosajhpled/893dc1819aa629d5c69510f71cf59914" target="_blank" class="link-item">Create Certificate Request on Apache</a></li>
+        <li><a href="https://status.aws.amazon.com/" target="_blank" class="link-item">Service Health Dashboard</a></li>
       </ul>
-      </div>
+    </div>
 
-      <div class="col">
-      <h2>Cheatsheets</h2>
+    <div class="link-block">
+      <h2 class="heading-link">Cheatsheets</h2>
       <ul>
-        <li><a href="https://gist.github.com/hofmannsven/6814451" target="_blank">My simply Git Cheatsheet</a></li>
-        <li><a href="https://vim.rtorr.com/" target="_blank">Vim Cheat Sheet</a></li>
-        <li><a href="https://css-tricks.com/examples/ShapesOfCSS/" target="_blank">The Shapes of CSS</a></li>
+        <li><a href="https://gist.github.com/hofmannsven/6814451" target="_blank" class="link-item">My simply Git Cheatsheet</a></li>
+        <li><a href="https://vim.rtorr.com/" target="_blank" class="link-item">Vim Cheat Sheet</a></li>
+        <li><a href="https://css-tricks.com/examples/ShapesOfCSS/" target="_blank" class="link-item">The Shapes of CSS</a></li>
       </ul>
-      </div>
+    </div>
 
-      <div class="col">
-      <h2>CodeIgniter</h2>
+    <div class="link-block">
+      <h2 class="heading-link">Communities</h2>
       <ul>
-        <li><a href="https://www.codeigniter.com/" target="_blank">CodeIgniter Web Framework</a></li>
-        <li><a href="http://codefury.net/2009/11/enable-site-wide-profiling-with-codeigniter/" target="_blank">Enable Site-Wide Profiling With CodeIgniter</a></li>
+        <li><a href="https://www.reddit.com/" target="_blank" class="link-item">Reddit</a></li>
       </ul>
-      </div>
-</div> <!-- row -->
-<div class="row">
-      <div class="col">
-      <h2>Communities</h2>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Languages / Frameworks</h2>
       <ul>
-        <li><a href="https://www.reddit.com/" target="_blank">Reddit</a></li>
-        <li><a href="https://saidit.net/" target="_blank">Saidit</a></li>
-        <li><a href="https://www.quora.com/" target="_blank">Quora</a></li>
+        <li><a href="http://php.net" target="_blank" class="link-item">PHP</a></li>
+        <li><a href="https://jquery.com/" target="_blank" class="link-item">jQuery</a></li>
+        <li><a href="https://angular.io/" target="_blank" class="link-item">Angular</a></li>
+        <li><a href="https://nodejs.org/en/" target="_blank" class="link-item">Node.js</a></li>
+        <li><a href="https://getbootstrap.com/" target="_blank" class="link-item">Bootstrap</a></li>
+        <li><a href="https://www.sitepoint.com/a-basic-html5-template/" target="_blank" class="link-item">A Basic HTML5 Template For Any Project</a></li>
       </ul>
-      </div>
+    </div>
 
-<div class="col">
-<h2>Languages / Frameworks</h2>
-<ul>
-  <li><a href="http://php.net" target="_blank">PHP</a></li>
-  <li><a href="https://jquery.com/" target="_blank">jQuery</a></li>
-  <li><a href="https://angular.io/" target="_blank">Angular</a></li>
-  <li><a href="https://nodejs.org/en/" target="_blank">Node.js</a></li>
-  <li><a href="https://getbootstrap.com/" target="_blank">Bootstrap</a></li>
-  <li><a href="https://www.sitepoint.com/a-basic-html5-template/" target="_blank">A Basic HTML5 Template For Any Project</a></li>
-</ul>
-</div>
+    <div class="link-block">
+      <h2 class="heading-link">Linux</h2>
+      <ul>
+        <li><a href="https://crontab.guru/every-5-minutes" target="_blank" class="link-item">the cron schedule expression editor</a></li>
+        <li><a href="https://chmod-calculator.com/" target="_blank" class="link-item">Chmod Calculator</a></li>
+        <li><a href="https://gist.github.com/nosajhpled/981603e86a8d93974e72a20d182a1a87" target="_blank" class="link-item">Create a CRON Job - Execute every 5 minutes</a></li>
+      </ul>
+    </div>
 
-<div class="col">
-<h2>Linux</h2>
-<ul>
-  <li><a href="https://crontab.guru/every-5-minutes" target="_blank">the cron schedule expression editor</a></li>
-  <li><a href="https://chmod-calculator.com/" target="_blank">Chmod Calculator</a></li>
-  <li><a href="https://gist.github.com/nosajhpled/981603e86a8d93974e72a20d182a1a87" target="_blank">Create a CRON Job - Execute every 5 minutes</a></li>
+    <div class="link-block">
+      <h2 class="heading-link">Performance</h2>
+      <ul>
+        <li><a href="https://gtmetrix.com/" target="_blank" class="link-item">GTmetrix</a></li>
+        <li><a href="https://developers.google.com/speed/pagespeed/insights" target="_blank" class="link-item">PageSpeed Insights</a></li>
+        <li><a href="https://www.tecmint.com/apache-performance-tuning/" target="_blank" class="link-item">5 Tips to Boost the Performance of Your Apache Web Server</a></li>
+        <li><a href="https://httpd.apache.org/docs/2.4/programs/ab.html" target="_blank" class="link-item">ab - Apache HTTP server benchmarking tool</a></li>
+        <li><a href="https://www.webpagetest.org" target="_blank" class="link-item">WebSitePageTest</a></li>
+        <li><a href="https://loadimpact.com/" target="_blank" class="link-item">Load Impact</a></li>
+        <li><a href="https://www.sitepoint.com/how-memory-disk-performance-affects-your-mongodb-database/" target="_blank" class="link-item">How Memory & Disk Performance Affects Your MongoDB Database</a></li>
+      </ul>
+    </div>
 
-</ul>
-</div>
-</div> <!-- row -->
+    <div class="link-block">
+      <h2 class="heading-link">PHP Resources</h2>
+      <ul>
+        <li><a href="https://www.tools4noobs.com/online_php_functions/" target="_blank" class="link-item">Online PHP functions</a></li>
+        <li><a href="https://www.phpdoc.org/" target="_blank" class="link-item">phpDocumentor</a></li>
+        <li><a href="https://www.sitepoint.com/most-popular-frontend-frameworks-compared/" target="_blank" class="link-item">The 5 Most Popular Front-end Frameworks Compared</a></li>
+        <li><a href="https://xdebug.org/wizard.php" target="_blank" class="link-item">XDebug Wizard - custom help installing xdebug</a></li>
+      </ul>
+    </div>
 
-<div class="row">
-  <div class="col">
-  <h2>Performance</h2>
-  <ul>
-    <li><a href="https://gtmetrix.com/" target="_blank">GTmetrix</a></li>
-    <li><a href="https://developers.google.com/speed/pagespeed/insights" target="_blank">PageSpeed Insights</a></li>
-    <li><a href="https://www.tecmint.com/apache-performance-tuning/" target="_blank">5 Tips to Boost the Performance of Your Apache Web Server</a></li>
-    <li><a href="https://httpd.apache.org/docs/2.4/programs/ab.html" target="_blank">ab - Apache HTTP server benchmarking tool</a></li>
-    <li><a href="https://www.webpagetest.org" target="_blank">WebSitePageTest</a></li>
-    <li><a href="https://loadimpact.com/" target="_blank">Load Impact</a></li>
-    <li><a href="https://www.sitepoint.com/how-memory-disk-performance-affects-your-mongodb-database/" target="_blank">How Memory & Disk Performance Affects Your MongoDB Database</a></li>
+    <div class="link-block">
+      <h2 class="heading-link">Project Managment</h2>
+      <ul>
+        <li><a href="https://trello.com" target="_blank" class="link-item">Trello</a></li>
+      </ul>
+    </div>
 
-  </ul>
+    <div class="link-block">
+      <h2 class="heading-link">Security</h2>
+      <ul>
+        <li><a href="https://www.ssllabs.com/ssltest/index.html" target="_blank" class="link-item">SSL Labs - SSL Server Test</a></li>
+        <li><a href="https://sslanalyzer.comodoca.com" target="_blank" class="link-item">Comodo - SSL Analyzer and SSL Certificate Checker</a></li>
+        <li><a href="https://www.owasp.org/index.php/Main_Page" target="_blank" class="link-item">OWASP</a></li>
+        <li><a href="https://www.netcraft.com/" target="_blank" class="link-item">Netcraft - What's that site running?</a></li>
+        <li><a href="https://dev.to/restoreddev/four-tips-for-a-more-secure-website-52ip" target="_blank" class="link-item">Four Tips for a More Secure Website</a></li>
+        <li><a href="https://dev.to/restoreddev/security-tips-for-a-php-application-4e9a" target="_blank" class="link-item">Security Tips for a PHP Application</a></li>
+        <li><a href="https://www.virustotal.com/#/home/url" target="_blank" class="link-item">Virus Total</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Training</h2>
+      <ul>
+        <li><a href="http://www.intellezy.com" target="_blank" class="link-item">Intellezy</a></li>
+        <li><a href="https://www.moocha.io/" target="_blank" class="link-item">Moocha</a></li>
+        <li><a href="https://www.class-central.com" target="_blank" class="link-item">Class Central</a></li>
+        <li><a href="https://www.lynda.com" target="_blank" class="link-item">Lynda</a></li>
+        <li><a href="https://www.safaribooksonline.com" target="_blank" class="link-item">Safari Online Books</a></li>
+        <li><a href="https://www.codecademy.com/" target="_blank" class="link-item">Codecademy</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Useful Stuff</h2>
+      <ul>
+        <li><a href="https://www.smashingmagazine.com/" target="_blank" class="link-item">Smashing Magazine</a></li>
+        <li><a href="https://www.sitepoint.com" target="_blank" class="link-item">SitePoint</a></li>
+        <li><a href="https://github.com/Hack-with-Github/Awesome-Hacking" target="_blank" class="link-item">Awesome Hacking</a></li>
+        <li><a href="https://tim.blog/" target="_blank" class="link-item">Tim Ferriss Show Transcripts</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Video</h2>
+      <ul>
+        <li><a href="https://www.youtube.com/" target="_blank" class="link-item">YouTube</a></li>
+        <li><a href="https://www.bitchute.com" target="_blank" class="link-item">BitChute</a></li>
+        <li><a href="https://d.tube/" target="_blank" class="link-item">DTube</a></li>
+        <li><a href="https://vimeo.com/" target="_blank" class="link-item">Vimeo</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Virtualization</h2>
+      <ul>
+        <li><a href="https://www.vagrantup.com/" target="_blank" class="link-item">Vagrant</a></li>
+        <li><a href="https://puphpet.com/" target="_blank" class="link-item">PuPHPet</a></li>
+        <li><a href="https://www.virtualbox.org/" target="_blank" class="link-item">Oracle VM VirtualBox</a></li>
+        <li><a href="https://laravel.com/docs/5.6/homestead" target="_blank" class="link-item">Laravel Homestead - Vagrant</a></li>
+        <li><a href="https://box.scotch.io/" target="_blank" class="link-item">Scotch Box</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Learn to code</h2>
+      <ul>
+        <li><a href="http://codingbat.com/java" target="_blank" class="link-item">CodingBat - Java / Python</a></li>
+        <li><a href="https://codecombat.com/" target="_blank" class="link-item">Code Combat</a></li>
+        <li><a href="https://www.codingame.com/start" target="_blank" class="link-item">Code in Game</a></li>
+        <li><a href="https://www.codewars.com/" target="_blank" class="link-item">Codewars</a></li>
+        <li><a href="https://www.hackerrank.com/" target="_blank" class="link-item">Hacker Rank</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Web Comics - Daily</h2>
+      <ul>
+        <li><a href="http://somethingpositive.net/index.html" target="_blank" class="link-item">Something Positive</a></li>
+        <li><a href="http://www.gogetaroomie.com/" target="_blank" class="link-item">Go Get A Roomie!</a></li>
+        <li><a href="http://wapsisquare.com/" target="_blank" class="link-item">Wapsi Square</a></li>
+        <li><a href="http://questionablecontent.net/" target="_blank" class="link-item">Questionable Content</a></li>
+        <li><a href="http://pvponline.com/" target="_blank" class="link-item">PVP</a></li>
+        <li><a href="http://www.misfile.com/" target="_blank" class="link-item">Misfile</a></li>
+        <li><a href="http://skin-horse.com/" target="_blank" class="link-item">Skin Horse</a></li>
+        <li><a href="http://www.dumbingofage.com/" target="_blank" class="link-item">Dumbing of Age</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Web Comics - Weekly</h2>
+      <ul>
+        <li><a href="http://www.starpowercomic.com/" target="_blank" class="link-item">Star Power</a></li>
+        <li><a href="http://www.girlgeniusonline.com/index.php" target="_blank" class="link-item">Girl Genius</a></li>
+        <li><a href="http://twokinds.keenspot.com/" target="_blank" class="link-item">Two Kinds</a></li>
+        <li><a href="http://monsterkind.enenkay.com/" target="_blank" class="link-item">Monsterkind</a></li>
+        <li><a href="https://www.xkcd.com/" target="_blank" class="link-item">xkcd</a></li>
+        <li><a href="https://raphcomic.com/" target="_blank" class="link-item">RaphComic</a></li>
+        <li><a href="http://www.gunnerkrigg.com/" target="_blank" class="link-item">Gunnerkrigg Court</a></li>
+        <li><a href="http://salvadoracomic.com/" target="_blank" class="link-item">Salvadora</a></li>
+        <li><a href="http://www.puckcomics.com"  target="_blank" class="link-item">Puck</a></li>
+        <li><a href="http://www.goblinscomic.org/"  target="_blank" class="link-item">Goblins</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Web Comics - Less Frequent</h2>
+      <ul>
+        <li><a href="http://www.viruscomix.com/subnormality.html" target="_blank" class="link-item">Subnormality</a></li>
+        <li><a href="https://www.pholph.com/" target="_blank" class="link-item">Jack</a></li>
+      </ul>
+    </div>
+
+    <div class="link-block">
+      <h2 class="heading-link">Web Comics - Completed / No Longer Updated</h2>
+      <ul>
+        <li><a href="http://www.dominic-deegan.com/" target="_blank" class="link-item">Dominic Deegan - Oracle for hire</a></li>
+        <li><a href="http://marryme.keenspot.com/" target="_blank" class="link-item">Marry Me</a></li>
+        <li><a href="http://www.venusenvycomic.com/" target="_blank" class="link-item">Venus Envy</a></li>
+        <li><a href="https://shortpacked.com/comic" target="_blank" class="link-item">Short Packed!</a></li>
+      </ul>
+    </div>
   </div>
-<div class="col">
-<h2>PHP Resources</h2>
-<ul>
-  <li><a href="https://www.tools4noobs.com/online_php_functions/" target="_blank">Online PHP functions</a></li>
-  <li><a href="https://www.phpdoc.org/" target="_blank">phpDocumentor</a></li>
-  <li><a href="https://www.sitepoint.com/most-popular-frontend-frameworks-compared/" target="_blank">The 5 Most Popular Front-end Frameworks Compared</a></li>
-  <li><a href="https://xdebug.org/wizard.php" target="_blank">XDebug Wizard - custom help installing xdebug</a></li>
-</ul>
 </div>
-
-<div class="col">
-<h2>Project Managment</h2>
-<ul>
-  <li><a href="https://trello.com" target="_blank">Trello</a></li>
-</ul>
-</div>
-
-
-</div> <!-- row -->
-
-<div class="row">
-  <div class="col">
-  <h2>Security</h2>
-  <ul>
-    <li><a href="https://www.ssllabs.com/ssltest/index.html" target="_blank">SSL Labs - SSL Server Test</a></li>
-    <li><a href="https://sslanalyzer.comodoca.com" target="_blank">Comodo - SSL Analyzer and SSL Certificate Checker</a></li>
-    <li><a href="https://www.owasp.org/index.php/Main_Page" target="_blank">OWASP</a></li>
-    <li><a href="https://www.netcraft.com/" target="_blank">Netcraft - What's that site running?</a></li>
-    <li><a href="https://dev.to/restoreddev/four-tips-for-a-more-secure-website-52ip" target="_blank">Four Tips for a More Secure Website</a></li>
-    <li><a href="https://dev.to/restoreddev/security-tips-for-a-php-application-4e9a" target="_blank">Security Tips for a PHP Application</a></li>
-    <li><a href="https://www.virustotal.com/#/home/url" target="_blank">Virus Total</a></li>
-
-  </ul>
-  </div>
-<div class="col">
-<h2>Training</h2>
-<ul>
-  <li><a href="http://www.intellezy.com" target="_blank">Intellezy</a></li>
-  <li><a href="https://www.moocha.io/" target="_blank">Moocha</a></li>
-  <li><a href="https://www.class-central.com" target="_blank">Class Central</a></li>
-  <li><a href="https://www.lynda.com" target="_blank">Lynda</a></li>
-  <li><a href="https://www.safaribooksonline.com" target="_blank">Safari Online Books</a></li>
-  <li><a href="https://www.codecademy.com/" target="_blank">Codecademy</a></li>
-</ul>
-</div>
-
-<div class="col">
-<h2>Useful Stuff</h2>
-<ul>
-  <li><a href="https://www.smashingmagazine.com/" target="_blank">Smashing Magazine</a></li>
-  <li><a href="https://www.sitepoint.com" target="_blank">SitePoint</a></li>
-  <li><a href="https://github.com/Hack-with-Github/Awesome-Hacking" target="_blank">Awesome Hacking</a></li>
-  <li><a href="https://tim.blog/" target="_blank">Tim Ferriss Show Transcripts</a></li>
-</ul>
-</div>
-</div> <!-- row -->
-
-<div class="row">
-
-  <div class="col">
-  <h2>Video</h2>
-  <ul>
-    <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
-    <li><a href="https://www.bitchute.com" target="_blank">BitChute</a></li>
-    <li><a href="https://d.tube/" target="_blank">DTube</a></li>
-    <li><a href="https://vimeo.com/" target="_blank">Vimeo</a></li>
-  </ul>
-  </div>
-
-<div class="col">
-<h2>Virtualization</h2>
-<ul>
-  <li><a href="https://www.vagrantup.com/" target="_blank">Vagrant</a></li>
-  <li><a href="https://puphpet.com/" target="_blank">PuPHPet</a></li>
-  <li><a href="https://www.virtualbox.org/" target="_blank">Oracle VM VirtualBox</a></li>
-  <li><a href="https://laravel.com/docs/5.6/homestead" target="_blank">Laravel Homestead - Vagrant</a></li>
-  <li><a href="https://box.scotch.io/" target="_blank"> Scotch Box</a></li>
-</ul>
-</div>
-
-<div class="col">
-<h2>Learn to code</h2>
-<ul>
-  <li><a href="http://codingbat.com/java" target="_blank">CodingBat - Java / Python</a></li>
-  <li><a href="https://codecombat.com/" target="_blank">Code Combat</a></li>
-  <li><a href="https://www.codingame.com/start" target="_blank">Code in Game</a></li>
-  <li><a href="https://www.codewars.com/" target="_blank">Codewars</a></li>
-  <li><a href="https://www.hackerrank.com/" target="_blank">Hacker Rank</a></li>
-</ul>
-</div>
-
-</div> <!-- row -->
-
-</div>
-
-<a href="webcomics.html" />Web Comics</a>
+</body>
+</html>
