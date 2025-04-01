@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        #gameCanvas {
+            background-color: #111;
+            display: block;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #scoreDisplay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #startButton, #muteButton {
+            position: absolute;
+            top: 20px;
+            padding: 10px 20px;
+            background-color: #3B82F6;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #startButton {
+            left: 20px;
+        }
+
+        #muteButton {
+            right: 20px;
+        }
+
+        #startButton:hover {
+            background-color: #2563eb;
+        }
+
+        #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 11;
+        }
+
+        #gameOverScreen h2 {
+            font-size: 48px;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #gameOverScreen p {
+            font-size: 30px;
+            color: #eee;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #newGameButton {
+            background-color: #00B8D4;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #newGameButton:hover {
+            background-color: #00869e;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .game-over-content {
+            border: 4px solid #fff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .shield {
+            background-color: #00FA9A; /* Medium Spring Green */
+            opacity: 0.7;
+            border-radius: 8px;
+        }
+
+        .shield-damaged-1 {
+            background-color: #FFA500; /* Orange */
+            opacity: 0.5;
+        }
+
+        .shield-damaged-2 {
+            background-color: #FF4500; /* Orange Red */
+            opacity: 0.3;
+        }
+
+        .shield-destroyed {
+            display: none;
+        }
+
+    </style>
+    <script>
+        // Initialize Tone.js
+        const shooterSound = new Tone.Synth({
+            oscillator: { type: 'triangle' },
+            envelope: { attack: 0.01, decay: 0.1, sustain: 0.3, release: 0.5 }
+        }).toDestination();
+
+        const gameOverSound = new Tone.MembraneSynth({
+            pitchDecay: 0.05,
+            octaves: 10,
+            oscillator: { type: 'sine' },
+            envelope: { attack: 0.001, decay: 0.4, sustain: 0.01, release: 1.4, attackCurve: 'exponential' }
+        }).toDestination();
+
+        const enemyHitSound = new Tone.Synth({
+            oscillator: { type: 'square' },
+            envelope: { attack: 0.001, decay: 0.1, sustain: 0.01, release: 0.1 }
+        }).toDestination();
+
+        let soundEnabled = true;
+
+        function playShooterSound() {
+            if (soundEnabled) {
+                shooterSound.triggerAttackRelease("C4", "16n");
+            }
+        }
+
+        function playGameOverSound() {
+            if (soundEnabled) {
+                const now = Tone.now();
+                gameOverSound.triggerAttackRelease("C2", "8n", now);
+                gameOverSound.triggerAttackRelease("G1", "8n", now + 0.2);
+                gameOverSound.triggerAttackRelease("C1", "8n", now + 0.4);
+            }
+        }
+
+        function playEnemyHitSound() {
+            if (soundEnabled) {
+                enemyHitSound.triggerAttackRelease("G4", "8n");
+            }
+        }
+
+    </script>
+</head>
+<body class="bg-gray-900 text-white font-inter antialiased">
+<div class="game-container">
+    <canvas id="gameCanvas"></canvas>
+    <div id="scoreDisplay">Score: 0</div>
+    <button id="startButton">Start</button>
+    <button id="muteButton">
+        <img id="muteIcon" src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/volume-2.svg" />
+    </button>
+    <div id="gameOverScreen" class="hidden">
+        <div class="game-over-content">
+            <h2>Game Over</h2>
+            <p id="finalScoreDisplayScreen">Your Score: 0</p>
+            <button id="newGameButton">New Game</button>
+        </div>
+    </div>
+    <div id="shieldsContainer" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 10;">
+    </div>
+</div>
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const startButton = document.getElementById('startButton');
+    const muteButton = document.getElementById('muteButton');
+    const muteIcon = document.getElementById('muteIcon');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    const newGameButton = document.getElementById('newGameButton');
+    const finalScoreDisplayScreen = document.getElementById('finalScoreDisplayScreen');
+    const shieldsContainer = document.getElementById('shieldsContainer');
+
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let player;
+    let bullets = [];
+    let enemies = [];
+    let score = 0;
+    let gameRunning = false;
+    let animationId;
+    let isMuted = false;
+    let enemySpeed = 1;
+    let enemyFireRate = 0.0025; // Even slower enemy fire rate
+    let wave = 1;
+    let enemiesPerRow = 8;
+    let numberOfRows = 3;
+    let enemyDirection = 1; // 1 for right, -1 for left
+    let shields = [];
+    const numShields = 3;
+    const shieldWidth = 60;
+    const shieldHeight = 20;
+    const shieldPadding = 10;
+
+
+    function initializeGame() {
+        player = {
+            x: canvas.width / 2 - 25,
+            y: canvas.height - 60,
+            width: 50,
+            height: 10,
+            speed: 15,
+            color: '#00BFFF'
+        };
+
+        bullets = [];
+        enemies = [];
+        score = 0;
+        wave = 1;
+        enemySpeed = 1;
+        enemyFireRate = 0.0025; // Ensure this is set here as well
+        enemyDirection = 1;
+        scoreDisplay.textContent = `Score: ${score}`;
+        gameRunning = true;
+        gameOverScreen.classList.add('hidden');
+        if (animationId) cancelAnimationFrame(animationId);
+        createEnemies();
+        createShields();
+        gameLoop();
+    }
+
+    function drawPlayer() {
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    function drawBullet(bullet) {
+        ctx.fillStyle = bullet.isPlayer ? '#FF4500' : '#FFFF00';
+        ctx.fillRect(bullet.x, bullet.y, 4, 15);
+    }
+
+    function drawEnemy(enemy) {
+        ctx.fillStyle = '#8B008B';
+        ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size);
+    }
+
+    function drawShield(shield) {
+        if (shield.health > 0) {
+            ctx.fillStyle = shield.health === 3 ? '#00FA9A' : shield.health === 2 ? '#FFA500' : '#FF4500';
+            ctx.globalAlpha = shield.health === 3 ? 0.7 : shield.health === 2 ? 0.5 : 0.3;
+            ctx.fillRect(shield.x, shield.y, shieldWidth, shieldHeight);
+            ctx.globalAlpha = 1;
+        }
+    }
+
+
+    function updatePlayer() {
+        if (keys['a'] && player.x > 0 || keys['ArrowLeft'] && player.x > 0) {
+            player.x -= player.speed;
+        }
+        if (keys['d'] && player.x + player.width < canvas.width || keys['ArrowRight'] && player.x + player.width < canvas.width) {
+            player.x += player.speed;
+        }
+    }
+
+    function updateBullets() {
+        for (let i = 0; i < bullets.length; i++) {
+            bullets[i].y -= bullets[i].isPlayer ? 7 : -4;
+            if (bullets[i].y < 0 || bullets[i].y > canvas.height) {
+                bullets.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    function updateEnemies() {
+        let reachedEdge = false;
+        for (let i = 0; i < enemies.length; i++) {
+            enemies[i].x += enemySpeed * enemyDirection;
+            enemies[i].y += enemySpeed / 8; // Aliens move down slower
+            if (enemies[i].x + enemies[i].size > canvas.width || enemies[i].x < 0) {
+                reachedEdge = true;
+            }
+            if (enemies[i].y > canvas.height) {
+                gameOver();
+                return;
+            }
+            if (Math.random() < enemyFireRate) {
+                bullets.push({
+                    x: enemies[i].x + enemies[i].size / 2 - 2,
+                    y: enemies[i].y + enemies[i].size / 2,
+                    isPlayer: false
+                });
+            }
+        }
+        if (reachedEdge) {
+            enemyDirection *= -1;
+            for (let i = 0; i < enemies.length; i++) {
+                enemies[i].y += 10;
+            }
+        }
+    }
+
+    function checkBulletCollision() {
+        for (let i = 0; i < bullets.length; i++) {
+            if (bullets[i].isPlayer) {
+                for (let j = 0; j < enemies.length; j++) {
+                    if (
+                        bullets[i].x < enemies[j].x + enemies[j].size &&
+                        bullets[i].x + 4 > enemies[j].x &&
+                        bullets[i].y < enemies[j].y + enemies[j].size &&
+                        bullets[i].y + 15 > enemies[j].y
+                    ) {
+                        bullets.splice(i, 1);
+                        enemies.splice(j, 1);
+                        score += 10;
+                        scoreDisplay.textContent = `Score: ${score}`;
+                        playEnemyHitSound();
+                        break;
+                    }
+                }
+            } else {
+                if (
+                    bullets[i].x < player.x + player.width &&
+                    bullets[i].x + 4 > player.x &&
+                    bullets[i].y < player.y + player.height &&
+                    bullets[i].y + 15 > player.y
+                ) {
+                    gameOver();
+                }
+            }
+        }
+        // Shield collision
+        for (let i = 0; i < bullets.length; i++) {
+            for (let j = 0; j < shields.length; j++) {
+                if (shields[j].health > 0 &&
+                    bullets[i].x < shields[j].x + shieldWidth &&
+                    bullets[i].x + 4 > shields[j].x &&
+                    bullets[i].y < shields[j].y + shieldHeight &&
+                    bullets[i].y + 15 > shields[j].y) {
+                    bullets.splice(i, 1);
+                    shields[j].health -= 1;
+                    if(shields[j].health <= 0){
+                        shields.splice(j,1);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    let keys = {};
+
+    document.addEventListener('keydown', (e) => {
+        keys[e.key] = true;
+        if (e.key === ' ' || e.key === 'Space') { // Also allow the Spacebar
+            e.preventDefault();
+            if (gameRunning) {
+                bullets.push({
+                    x: player.x + player.width / 2 - 2,
+                    y: player.y,
+                    isPlayer: true
+                });
+                playShooterSound();
+            }
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        keys[e.key] = false;
+    });
+
+    function gameLoop() {
+        if (!gameRunning) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updatePlayer();
+        updateBullets();
+        updateEnemies();
+        checkBulletCollision();
+
+        drawPlayer();
+        bullets.forEach(drawBullet);
+        enemies.forEach(drawEnemy);
+        shields.forEach(drawShield);
+
+        if (enemies.length === 0) {
+            wave++;
+            enemySpeed += 0.5;
+            enemyFireRate += 0.0025;
+            createEnemies();
+        }
+        animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function createEnemies() {
+        enemies = [];
+        const enemySpacingX = (canvas.width - 100) / enemiesPerRow;
+        const enemySpacingY = 40;
+        const enemySize = 20;
+
+        for (let i = 0; i < numberOfRows; i++) {
+            for (let j = 0; j < enemiesPerRow; j++) {
+                enemies.push({
+                    x: 50 + j * enemySpacingX,
+                    y: 50 + i * enemySpacingY,
+                    size: enemySize
+                });
+            }
+        }
+    }
+
+    function createShields() {
+        shields = [];
+        const totalWidth = numShields * shieldWidth + (numShields - 1) * shieldPadding;
+        const startX = (canvas.width - totalWidth) / 2;
+
+        for (let i = 0; i < numShields; i++) {
+            shields.push({
+                x: startX + i * (shieldWidth + shieldPadding),
+                y: canvas.height - 150,
+                health: 3
+            });
+        }
+        // Render shields in HTML
+        shieldsContainer.innerHTML = ''; // Clear any existing shields
+        shields.forEach((shield, index) => {
+            const shieldElement = document.createElement('div');
+            shieldElement.classList.add('shield');
+            shieldElement.id = `shield-${index}`; // Unique ID for each shield
+            shieldElement.style.width = `${shieldWidth}px`;
+            shieldElement.style.height = `${shieldHeight}px`;
+            shieldsContainer.appendChild(shieldElement);
+        });
+    }
+
+    function updateShieldsVisuals() {
+        shields.forEach((shield, index) => {
+            const shieldElement = document.getElementById(`shield-${index}`);
+            if (!shieldElement) return;
+
+            if (shield.health === 3) {
+                shieldElement.className = 'shield';
+            } else if (shield.health === 2) {
+                shieldElement.className = 'shield shield-damaged-1';
+            } else if (shield.health === 1) {
+                shieldElement.className = 'shield shield-damaged-2';
+            } else {
+                shieldElement.className = 'shield shield-destroyed';
+            }
+        });
+    }
+
+
+    function gameOver() {
+        gameRunning = false;
+        cancelAnimationFrame(animationId);
+        playGameOverSound();
+        finalScoreDisplayScreen.textContent = `Your Score: ${score}`;
+        gameOverScreen.classList.remove('hidden');
+    }
+
+    startButton.addEventListener('click', () => {
+        initializeGame();
+    });
+
+    newGameButton.addEventListener('click', () => {
+        initializeGame();
+    });
+
+    muteButton.addEventListener('click', () => {
+        isMuted = !isMuted;
+        soundEnabled = !isMuted;
+        muteIcon.src = isMuted
+            ? "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/volume-x.svg"
+            : "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/volume-2.svg";
+    });
+
+    // initializeGame(); // Start on button click
+    setInterval(updateShieldsVisuals, 100);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Bubble Shooter</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            font-family: sans-serif;
+        }
+        canvas {
+            display: block;
+        }
+        #startScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<div id="startScreen">Press SPACE to start</div>
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startScreen = document.getElementById('startScreen');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const bubbles = [];
+    const player = {
+        z: 1000,
+    };
+
+    let score = 0;
+    let missed = 0;
+    let speedMultiplier = 1;
+    let spawnInterval = 1000;
+    let mouseX = 0;
+    let mouseY = 0;
+    let gameRunning = false;
+    let bubblesPopped = 0;
+    let bubbleIncreaseThreshold = 25;
+
+    function createBubble() {
+        const radius = Math.random() * 20 + 10;
+        const screenWidthLimit = canvas.width * 0.7;
+        const screenHeightLimit = canvas.height * 0.7;
+
+        const x = (Math.random() - 0.5) * screenWidthLimit;
+        const y = (Math.random() - 0.5) * screenHeightLimit;
+        const z = 0;
+        const speedZ = Math.random() * 3 + 1;
+        const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+
+        bubbles.push({ x, y, z, radius, speedZ, color });
+    }
+
+    function project(x, y, z, radius) {
+        const scale = player.z / (player.z - z);
+        const projectedX = x * scale + canvas.width / 2;
+        const projectedY = y * scale + canvas.height / 2;
+        const projectedRadius = radius * scale;
+        return { x: projectedX, y: projectedY, radius: projectedRadius };
+    }
+
+    function drawBubbles() {
+        bubbles.sort((a, b) => b.z - a.z);
+        bubbles.forEach((bubble) => {
+            const projected = project(bubble.x, bubble.y, bubble.z, bubble.radius);
+            if (projected.radius > 0) {
+                ctx.beginPath();
+                ctx.arc(projected.x, projected.y, projected.radius, 0, Math.PI * 2);
+                ctx.fillStyle = bubble.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        });
+    }
+
+    function updateBubbles() {
+        bubbles.forEach((bubble, index) => {
+            bubble.z += bubble.speedZ * speedMultiplier;
+
+            if (bubble.z > player.z) {
+                bubbles.splice(index, 1);
+                missed++;
+            }
+        });
+    }
+
+    function checkCollision() {
+        for (let i = bubbles.length - 1; i >= 0; i--) {
+            const bubble = bubbles[i];
+            const projected = project(bubble.x, bubble.y, bubble.z, bubble.radius);
+            const dx = mouseX - projected.x;
+            const dy = mouseY - projected.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < projected.radius) {
+                bubbles.splice(i, 1);
+                score++;
+                bubblesPopped++;
+                if (bubblesPopped >= bubbleIncreaseThreshold) {
+                    speedMultiplier += 0.2;
+                    spawnInterval = Math.max(100, spawnInterval - 100);
+                    bubblesPopped = 0;
+                }
+                return;
+            }
+        }
+    }
+
+    function drawScore() {
+        ctx.fillStyle = 'white';
+        ctx.font = '20px Arial';
+        ctx.fillText(`Score: ${score}`, 10, 30);
+        ctx.fillText(`Missed: ${missed}`, 10, 55);
+    }
+
+    function gameLoop(timestamp) {
+        if (!gameRunning) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBubbles();
+        updateBubbles();
+        checkCollision();
+        drawScore();
+        requestAnimationFrame(gameLoop);
+    }
+
+    canvas.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+    });
+
+    setInterval(() => {
+        if (gameRunning) createBubble();
+    }, spawnInterval);
+
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            gameRunning = !gameRunning;
+            if (gameRunning) {
+                startScreen.style.display = 'none';
+                requestAnimationFrame(gameLoop);
+            } else {
+                startScreen.style.display = 'block';
+                startScreen.textContent = 'Press SPACE to unpause';
+            }
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+</body>
+</html>
